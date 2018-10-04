@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Notas
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list reorder="true" (ionItemReorder)="reorderNotas($event)">
+    <ion-item-sliding *ngFor="let notaItem of arrayNotas">
+      <ion-item (click)="edit($event, notaItem)">
+        <!--p>notaId: {{notaItem.notaId}}</p>
+        <p>notaOrden: {{notaItem.notaOrden}}</p-->
+        <div text-wrap>{{notaItem.notaTexto}}</div>
+      </ion-item>
+      <ion-item-options side="right">
+        <button style="text-transform: none;" ion-button color="light" (click)="edit($event, notaItem)">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <ion-icon name="create"></ion-icon>
+        </button>
+        <button style="text-transform: none;" ion-button color="light" (click)="delete($event, notaItem)">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+    <ion-fab right bottom>
+      <button ion-fab color="light" (click)="insert($event)">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-fab>
+  </ion-list>
+
+</ion-content>
