@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { DetailPage } from '../pages/detail/detail';
+import { LoginPage } from '../pages/login/login';
 
 import { TodoServiceProvider } from '../providers/todo-service/todo-service';
 
@@ -17,7 +18,8 @@ import { TodoServiceProvider } from '../providers/todo-service/todo-service';
     MyApp,
     HomePage,
     AboutPage,
-    DetailPage
+    DetailPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { TodoServiceProvider } from '../providers/todo-service/todo-service';
     MyApp,
     HomePage,
     AboutPage,
-    DetailPage
+    DetailPage,
+    LoginPage
   ],
   providers: [
     StatusBar,
