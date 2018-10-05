@@ -15,7 +15,8 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  usuarioAutorizado: string;
+  rootPage: any;
   pages: Array<{ title: string, component: any }>;
 
   constructor(
@@ -29,7 +30,8 @@ export class MyApp {
     // set our app's pages
     this.pages = [
       { title: 'Notas', component: HomePage },
-      { title: 'Acerca de...', component: AboutPage }
+      { title: 'Acerca de...', component: AboutPage },
+      { title: 'Salir', component: LoginPage }
     ];
   }
 
@@ -39,6 +41,13 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
+      console.log('Usuario autorizado [' + this.usuarioAutorizado + ']');
+      if (this.usuarioAutorizado === null || this.usuarioAutorizado === "undefined") {
+        this.rootPage = LoginPage;
+      } else {
+        this.rootPage = HomePage;
+      }
     });
   }
 

@@ -17,4 +17,10 @@ export class AboutPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
+  ionViewCanEnter() {
+    let usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
+    console.log('Usuario autorizado [' + usuarioAutorizado + ']');
+    return (usuarioAutorizado != null && usuarioAutorizado != "undefined");
+  }
+
 }

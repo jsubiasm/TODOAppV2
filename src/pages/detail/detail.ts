@@ -27,6 +27,12 @@ export class DetailPage {
     this.selectedNota = navParams.get('nota');
   }
 
+  ionViewCanEnter() {
+    let usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
+    console.log('Usuario autorizado [' + usuarioAutorizado + ']');
+    return (usuarioAutorizado != null && usuarioAutorizado != "undefined");
+  }
+
   save(event, notaPantalla) {
     if (parseInt(notaPantalla.notaId) >= 0) {
       console.log('service updateNotaTexto [' + notaPantalla.notaId + '] [' + notaPantalla.notaTexto + ']');

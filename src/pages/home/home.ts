@@ -21,6 +21,16 @@ export class HomePage {
     public todoServiceProvider: TodoServiceProvider) {
   }
 
+  ionViewCanEnter() {
+    let usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
+    console.log('Usuario autorizado [' + usuarioAutorizado + ']');
+    return (usuarioAutorizado != null && usuarioAutorizado != "undefined");
+  }
+
+  ionViewWillEnter() {
+    this.getNotas();
+  }
+
   /*
   ionViewDidLoad() { console.log('service ionViewDidLoad'); }
   ionViewWillEnter() { console.log('service ionViewWillEnter'); }
@@ -55,10 +65,6 @@ export class HomePage {
           console.error(error);
         }
       );
-  }
-
-  ionViewWillEnter() {
-    this.getNotas();
   }
 
   reorderNotas(indexes) {

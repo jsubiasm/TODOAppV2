@@ -16,14 +16,20 @@ import { HomePage } from '../home/home';
 })
 export class LoginPage {
 
+  email: string;
+  password: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+  ionViewWillEnter() {
+    console.log('Eliminado usuario autorizado');
+    window.localStorage.removeItem('usuarioAutorizado');
   }
 
   login(event) {
+    console.log('Usuario autorizado [' + this.email + '] [' + this.password + ']');
+    window.localStorage.setItem('usuarioAutorizado', this.email);
     this.navCtrl.setRoot(HomePage);
   }
 }
