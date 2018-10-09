@@ -1,16 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
-
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
-
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @Component({
   selector: 'page-login',
@@ -21,11 +12,27 @@ export class LoginPage {
   email: string;
   password: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public todoServiceProvider: TodoServiceProvider) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public todoServiceProvider: TodoServiceProvider,
+    public toastCtrl: ToastController) {
+  }
+
+  mostrarMensaje(mensaje) {
+    const toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 2000,
+      position: 'top',
+      showCloseButton: false,
+      dismissOnPageChange: true
+    });
+    toast.present();
   }
 
   ionViewWillEnter() {
     console.log('Eliminado usuario autorizado');
+    window.localStorage.removeItem('usuarioAutorizadoEmail');
     window.localStorage.removeItem('usuarioAutorizado');
   }
 
@@ -35,19 +42,25 @@ export class LoginPage {
         .subscribe(
           (usuariosArray: any) => {
             if (!usuariosArray || usuariosArray.length < 1) {
-              console.error('service getUsuario error -> No se ha encontrado ningún usuario con las credenciales proporcionadas');
+              var mensaje = 'No se ha encontrado ningún usuario con las credenciales proporcionadas';
+              console.error('service getUsuario error -> ' + mensaje);
+              this.mostrarMensaje(mensaje);
             }
             else if (usuariosArray.length > 1) {
-              console.error('service getUsuario error -> Se ha encontrado más de un usuario con las credenciales proporcionadas');
+              var mensaje = 'Se ha encontrado más de un usuario con las credenciales proporcionadas';
+              console.error('service getUsuario error -> ' + mensaje);
+              this.mostrarMensaje(mensaje);
             }
             else if (usuariosArray.length === 1) {
               console.log('Usuario autorizado [' + usuariosArray[0]._id.$oid + ']');
+              window.localStorage.setItem('usuarioAutorizadoEmail', this.email);
               window.localStorage.setItem('usuarioAutorizado', usuariosArray[0]._id.$oid);
               this.navCtrl.setRoot(HomePage);
             }
             else {
-              console.error('service getUsuario error -> Error inesperado');
-              console.log(usuariosArray);
+              var mensaje = 'Error inesperado';
+              console.error('service getUsuario error -> ' + mensaje);
+              this.mostrarMensaje(mensaje);
             }
           },
           (error) => {
@@ -55,6 +68,10 @@ export class LoginPage {
             console.error(error);
           }
         );
+    }
+    else {
+      var mensaje = 'Debe introducir un usuario y una contraseña';
+      this.mostrarMensaje(mensaje);
     }
   }
 }

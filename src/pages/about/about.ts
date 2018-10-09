@@ -15,6 +15,7 @@ import { NavController, NavParams } from 'ionic-angular';
 export class AboutPage {
 
   usuarioAutorizado: string;
+  usuarioAutorizadoEmail: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -22,6 +23,8 @@ export class AboutPage {
   ionViewCanEnter() {
     this.usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
     console.log('Usuario autorizado [' + this.usuarioAutorizado + ']');
+    this.usuarioAutorizadoEmail = window.localStorage.getItem('usuarioAutorizadoEmail');
+    console.log('Usuario autorizado email [' + this.usuarioAutorizadoEmail + ']');
     return (this.usuarioAutorizado != null && this.usuarioAutorizado != "undefined");
   }
 

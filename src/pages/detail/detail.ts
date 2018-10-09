@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 
@@ -24,8 +24,20 @@ export class DetailPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public todoServiceProvider: TodoServiceProvider) {    // If we navigated to this page, we will have an item available as a nav param
+    public todoServiceProvider: TodoServiceProvider,
+    public toastCtrl: ToastController) {    // If we navigated to this page, we will have an item available as a nav param
     this.selectedNota = navParams.get('nota');
+  }
+
+  mostrarMensaje(mensaje) {
+    const toast = this.toastCtrl.create({
+      message: mensaje,
+      duration: 2000,
+      position: 'top',
+      showCloseButton: false,
+      dismissOnPageChange: true
+    });
+    toast.present();
   }
 
   ionViewCanEnter() {
@@ -35,46 +47,52 @@ export class DetailPage {
   }
 
   save(event, notaPantalla) {
-    if (parseInt(notaPantalla.notaId) >= 0) {
-      console.log('service updateNotaTexto [' + notaPantalla.notaId + '] [' + notaPantalla.notaTexto + ']');
-      this.todoServiceProvider.updateNotaTexto(notaPantalla.notaId, notaPantalla.notaTexto, this.usuarioAutorizado)
-        .subscribe(
-          (serviceReturn: any) => {
-            this.navCtrl.pop();
-          },
-          (error) => {
-            console.error('service updateNotaTexto error ->');
-            console.error(error);
-          }
-        );
+    if (notaPantalla.notaTexto) {
+      if (parseInt(notaPantalla.notaId) >= 0) {
+        console.log('service updateNotaTexto [' + notaPantalla.notaId + '] [' + notaPantalla.notaTexto + ']');
+        this.todoServiceProvider.updateNotaTexto(notaPantalla.notaId, notaPantalla.notaTexto, this.usuarioAutorizado)
+          .subscribe(
+            (serviceReturn: any) => {
+              this.navCtrl.pop();
+            },
+            (error) => {
+              console.error('service updateNotaTexto error ->');
+              console.error(error);
+            }
+          );
+      }
+      else {
+        console.log('service getUltimaNota');
+        this.todoServiceProvider.getUltimaNota(this.usuarioAutorizado)
+          .subscribe(
+            (notasArray: any) => {
+              var notaNumeroOrden = 0;
+              if (notasArray[0]) {
+                notaNumeroOrden = parseInt(notasArray[0].numeroOrden.$numberLong);
+                notaNumeroOrden++;
+              }
+              console.log('service insertNota [' + notaNumeroOrden + '] [' + notaPantalla.notaTexto + ']');
+              this.todoServiceProvider.insertNota(notaNumeroOrden, notaPantalla.notaTexto, this.usuarioAutorizado)
+                .subscribe(
+                  (serviceReturn: any) => {
+                    this.navCtrl.pop();
+                  },
+                  (error) => {
+                    console.error('service insertNota error ->');
+                    console.error(error);
+                  }
+                );
+            },
+            (error) => {
+              console.error('service getUltimaNota error ->');
+              console.error(error);
+            }
+          );
+      }
     }
     else {
-      console.log('service getUltimaNota');
-      this.todoServiceProvider.getUltimaNota(this.usuarioAutorizado)
-        .subscribe(
-          (notasArray: any) => {
-            var notaNumeroOrden = 0;
-            if (notasArray[0]) {
-              notaNumeroOrden = parseInt(notasArray[0].numeroOrden.$numberLong);
-              notaNumeroOrden++;
-            }
-            console.log('service insertNota [' + notaNumeroOrden + '] [' + notaPantalla.notaTexto + ']');
-            this.todoServiceProvider.insertNota(notaNumeroOrden, notaPantalla.notaTexto, this.usuarioAutorizado)
-              .subscribe(
-                (serviceReturn: any) => {
-                  this.navCtrl.pop();
-                },
-                (error) => {
-                  console.error('service insertNota error ->');
-                  console.error(error);
-                }
-              );
-          },
-          (error) => {
-            console.error('service getUltimaNota error ->');
-            console.error(error);
-          }
-        );
+      var mensaje = 'Debe introducir un texto para la nota';
+      this.mostrarMensaje(mensaje);
     }
   }
 }
