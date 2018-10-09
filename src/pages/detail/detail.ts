@@ -19,6 +19,7 @@ import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 export class DetailPage {
 
   selectedNota: any;
+  usuarioAutorizado: string;
 
   constructor(
     public navCtrl: NavController,
@@ -28,15 +29,15 @@ export class DetailPage {
   }
 
   ionViewCanEnter() {
-    let usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
-    console.log('Usuario autorizado [' + usuarioAutorizado + ']');
-    return (usuarioAutorizado != null && usuarioAutorizado != "undefined");
+    this.usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
+    console.log('Usuario autorizado [' + this.usuarioAutorizado + ']');
+    return (this.usuarioAutorizado != null && this.usuarioAutorizado != "undefined");
   }
 
   save(event, notaPantalla) {
     if (parseInt(notaPantalla.notaId) >= 0) {
       console.log('service updateNotaTexto [' + notaPantalla.notaId + '] [' + notaPantalla.notaTexto + ']');
-      this.todoServiceProvider.updateNotaTexto(notaPantalla.notaId, notaPantalla.notaTexto)
+      this.todoServiceProvider.updateNotaTexto(notaPantalla.notaId, notaPantalla.notaTexto, this.usuarioAutorizado)
         .subscribe(
           (serviceReturn: any) => {
             this.navCtrl.pop();
@@ -49,7 +50,7 @@ export class DetailPage {
     }
     else {
       console.log('service getUltimaNota');
-      this.todoServiceProvider.getUltimaNota()
+      this.todoServiceProvider.getUltimaNota(this.usuarioAutorizado)
         .subscribe(
           (notasArray: any) => {
             var notaNumeroOrden = 0;
@@ -58,7 +59,7 @@ export class DetailPage {
               notaNumeroOrden++;
             }
             console.log('service insertNota [' + notaNumeroOrden + '] [' + notaPantalla.notaTexto + ']');
-            this.todoServiceProvider.insertNota(notaNumeroOrden, notaPantalla.notaTexto)
+            this.todoServiceProvider.insertNota(notaNumeroOrden, notaPantalla.notaTexto, this.usuarioAutorizado)
               .subscribe(
                 (serviceReturn: any) => {
                   this.navCtrl.pop();

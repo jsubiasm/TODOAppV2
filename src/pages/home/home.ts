@@ -14,6 +14,7 @@ import { Nota } from '../../model/nota';
 export class HomePage {
 
   arrayNotas: Nota[];
+  usuarioAutorizado: string;
 
   constructor(
     public navCtrl: NavController,
@@ -22,9 +23,9 @@ export class HomePage {
   }
 
   ionViewCanEnter() {
-    let usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
-    console.log('Usuario autorizado [' + usuarioAutorizado + ']');
-    return (usuarioAutorizado != null && usuarioAutorizado != "undefined");
+    this.usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
+    console.log('Usuario autorizado [' + this.usuarioAutorizado + ']');
+    return (this.usuarioAutorizado != null && this.usuarioAutorizado != "undefined");
   }
 
   ionViewWillEnter() {
@@ -45,7 +46,7 @@ export class HomePage {
   getNotas() {
     this.arrayNotas = [];
     console.log('service getNotas');
-    this.todoServiceProvider.getNotas()
+    this.todoServiceProvider.getNotas(this.usuarioAutorizado)
       .subscribe(
         (notasArray: any) => {
           var i;
@@ -75,7 +76,7 @@ export class HomePage {
     for (i = 0; i < this.arrayNotas.length; i++) {
       let notaItem = this.arrayNotas[i];
       console.log('service updateNotaNumeroOrden [' + notaItem.notaId + '] [' + i + ']');
-      this.todoServiceProvider.updateNotaNumeroOrden(notaItem.notaId, i)
+      this.todoServiceProvider.updateNotaNumeroOrden(notaItem.notaId, i, this.usuarioAutorizado)
         .subscribe(
           (serviceReturn: any) => {
             // this.getNotas();
@@ -90,7 +91,7 @@ export class HomePage {
 
   delete(event, nota) {
     console.log('service deleteNota [' + nota.notaId + ']');
-    this.todoServiceProvider.deleteNota(nota.notaId)
+    this.todoServiceProvider.deleteNota(nota.notaId, this.usuarioAutorizado)
       .subscribe(
         (serviceReturn: any) => {
           this.getNotas();
