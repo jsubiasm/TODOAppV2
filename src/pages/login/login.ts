@@ -42,14 +42,15 @@ export class LoginPage {
       this.todoServiceProvider.getUsuario(this.email, this.password)
         .subscribe(
           (usuariosArray: any) => {
+            let mensaje: string;
             if (!usuariosArray || usuariosArray.length < 1) {
-              var mensaje = 'No se ha encontrado ningún usuario con las credenciales proporcionadas';
-              console.error('service getUsuario error -> ' + mensaje);
+              mensaje = 'No se ha encontrado ningún usuario con las credenciales proporcionadas';
+              console.warn('service getUsuario warn -> ' + mensaje);
               this.mostrarMensaje(mensaje);
             }
             else if (usuariosArray.length > 1) {
-              var mensaje = 'Se ha encontrado más de un usuario con las credenciales proporcionadas';
-              console.error('service getUsuario error -> ' + mensaje);
+              mensaje = 'Se ha encontrado más de un usuario con las credenciales proporcionadas';
+              console.warn('service getUsuario warn -> ' + mensaje);
               this.mostrarMensaje(mensaje);
             }
             else if (usuariosArray.length === 1) {
@@ -59,7 +60,7 @@ export class LoginPage {
               this.navCtrl.setRoot(HomePage);
             }
             else {
-              var mensaje = 'Error inesperado';
+              mensaje = 'Error inesperado';
               console.error('service getUsuario error -> ' + mensaje);
               this.mostrarMensaje(mensaje);
             }
