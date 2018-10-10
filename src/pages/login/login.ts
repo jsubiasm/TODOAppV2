@@ -38,6 +38,7 @@ export class LoginPage {
 
   login(event) {
     if (this.email && this.password) {
+      console.log('service getUsuario [' + this.email + '] [' + this.password + ']');
       this.todoServiceProvider.getUsuario(this.email, this.password)
         .subscribe(
           (usuariosArray: any) => {
@@ -52,8 +53,8 @@ export class LoginPage {
               this.mostrarMensaje(mensaje);
             }
             else if (usuariosArray.length === 1) {
-              console.log('Usuario autorizado [' + usuariosArray[0]._id.$oid + ']');
-              window.localStorage.setItem('usuarioAutorizadoEmail', this.email);
+              console.log('Guardado usuario autorizado [' + usuariosArray[0].email + '] [' + usuariosArray[0]._id.$oid + ']');
+              window.localStorage.setItem('usuarioAutorizadoEmail', usuariosArray[0].email);
               window.localStorage.setItem('usuarioAutorizado', usuariosArray[0]._id.$oid);
               this.navCtrl.setRoot(HomePage);
             }

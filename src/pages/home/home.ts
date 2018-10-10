@@ -45,7 +45,7 @@ export class HomePage {
 
   getNotas() {
     this.arrayNotas = [];
-    console.log('service getNotas');
+    console.log('service getNotas [' + this.usuarioAutorizado + ']');
     this.todoServiceProvider.getNotas(this.usuarioAutorizado)
       .subscribe(
         (notasArray: any) => {
@@ -75,7 +75,7 @@ export class HomePage {
     var i;
     for (i = 0; i < this.arrayNotas.length; i++) {
       let notaItem = this.arrayNotas[i];
-      console.log('service updateNotaNumeroOrden [' + notaItem.notaId + '] [' + i + ']');
+      console.log('service updateNotaNumeroOrden [' + notaItem.notaId + '] [' + i + '] [' + this.usuarioAutorizado + ']');
       this.todoServiceProvider.updateNotaNumeroOrden(notaItem.notaId, i, this.usuarioAutorizado)
         .subscribe(
           (serviceReturn: any) => {
@@ -90,7 +90,7 @@ export class HomePage {
   }
 
   delete(event, nota) {
-    console.log('service deleteNota [' + nota.notaId + ']');
+    console.log('service deleteNota [' + nota.notaId + '] [' + this.usuarioAutorizado + ']');
     this.todoServiceProvider.deleteNota(nota.notaId, this.usuarioAutorizado)
       .subscribe(
         (serviceReturn: any) => {

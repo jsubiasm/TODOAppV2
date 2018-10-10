@@ -47,9 +47,9 @@ export class DetailPage {
   }
 
   save(event, notaPantalla) {
-    if (notaPantalla.notaTexto) {
+    if (notaPantalla.notaTexto && notaPantalla.notaTexto.trim().length > 0) {
       if (parseInt(notaPantalla.notaId) >= 0) {
-        console.log('service updateNotaTexto [' + notaPantalla.notaId + '] [' + notaPantalla.notaTexto + ']');
+        console.log('service updateNotaTexto [' + notaPantalla.notaId + '] [' + notaPantalla.notaTexto + '] [' + this.usuarioAutorizado + ']');
         this.todoServiceProvider.updateNotaTexto(notaPantalla.notaId, notaPantalla.notaTexto, this.usuarioAutorizado)
           .subscribe(
             (serviceReturn: any) => {
@@ -62,7 +62,7 @@ export class DetailPage {
           );
       }
       else {
-        console.log('service getUltimaNota');
+        console.log('service getUltimaNota [' + this.usuarioAutorizado + ']');
         this.todoServiceProvider.getUltimaNota(this.usuarioAutorizado)
           .subscribe(
             (notasArray: any) => {
@@ -71,7 +71,7 @@ export class DetailPage {
                 notaNumeroOrden = parseInt(notasArray[0].numeroOrden.$numberLong);
                 notaNumeroOrden++;
               }
-              console.log('service insertNota [' + notaNumeroOrden + '] [' + notaPantalla.notaTexto + ']');
+              console.log('service insertNota [' + notaNumeroOrden + '] [' + notaPantalla.notaTexto + '] [' + this.usuarioAutorizado + ']');
               this.todoServiceProvider.insertNota(notaNumeroOrden, notaPantalla.notaTexto, this.usuarioAutorizado)
                 .subscribe(
                   (serviceReturn: any) => {
