@@ -27,20 +27,17 @@ export class TodoServiceProvider {
 
   insertNota(notaNumeroOrden, notaTexto, usuarioId) {
     var url = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/todoappv2-zxque/service/TODOService/incoming_webhook/insertNota';
-    url = url + '?notaNumeroOrden=' + notaNumeroOrden + '&notaTexto=' + notaTexto.trim() + '&usuarioId=' + usuarioId.trim();
-    return this.http.get(url);
+    return this.http.post(url, { 'notaNumeroOrden': notaNumeroOrden, 'notaTexto': notaTexto.trim(), 'usuarioId': usuarioId.trim() });
   }
 
   updateNotaNumeroOrden(notaId, notaNumeroOrden, usuarioId) {
     var url = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/todoappv2-zxque/service/TODOService/incoming_webhook/updateNotaNumeroOrden';
-    url = url + '?notaId=' + notaId + '&notaNumeroOrden=' + notaNumeroOrden + '&usuarioId=' + usuarioId.trim();
-    return this.http.get(url);
+    return this.http.post(url, { 'notaId': notaId, 'notaNumeroOrden': notaNumeroOrden, 'usuarioId': usuarioId.trim() });
   }
 
   updateNotaTexto(notaId, notaTexto, usuarioId) {
     var url = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/todoappv2-zxque/service/TODOService/incoming_webhook/updateNotaTexto';
-    url = url + '?notaId=' + notaId + '&notaTexto=' + notaTexto.trim() + '&usuarioId=' + usuarioId.trim();
-    return this.http.get(url);
+    return this.http.post(url, { 'notaId': notaId, 'notaTexto': notaTexto.trim(), 'usuarioId': usuarioId.trim() });
   }
 
   deleteNota(notaId, usuarioId) {

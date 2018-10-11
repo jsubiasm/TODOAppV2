@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
+import * as CryptoJS from 'crypto-js';
+
 /**
  * Generated class for the AboutPage page.
  *
@@ -14,6 +16,8 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class AboutPage {
 
+  cadenaEncriptada: string;
+
   usuarioAutorizado: string;
   usuarioAutorizadoEmail: string;
 
@@ -21,6 +25,13 @@ export class AboutPage {
   }
 
   ionViewCanEnter() {
+
+    var hash = CryptoJS.HmacSHA256('Mensaje a encriptar', 'clave secreta');
+    var hashInB64 = CryptoJS.enc.Base64.stringify(hash);
+    var hashInHex = CryptoJS.enc.Hex.stringify(hash);
+    this.cadenaEncriptada = '[' + hashInB64 + '][' + hashInHex + ']';
+    console.log('Cadena encriptada [' + this.cadenaEncriptada + ']');
+
     this.usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
     console.log('Usuario autorizado [' + this.usuarioAutorizado + ']');
     this.usuarioAutorizadoEmail = window.localStorage.getItem('usuarioAutorizadoEmail');
