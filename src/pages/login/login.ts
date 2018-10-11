@@ -3,6 +3,8 @@ import { NavController, NavParams, ToastController } from 'ionic-angular';
 import { HomePage } from '../home/home';
 import { TodoServiceProvider } from '../../providers/todo-service/todo-service';
 
+import * as CryptoJS from 'crypto-js';
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
@@ -38,6 +40,7 @@ export class LoginPage {
 
   login(event) {
     if (this.email && this.password) {
+      this.password = CryptoJS.enc.Hex.stringify(CryptoJS.SHA256(this.password));
       console.log('service getUsuario [' + this.email + '] [' + this.password + ']');
       this.todoServiceProvider.getUsuario(this.email, this.password)
         .subscribe(
