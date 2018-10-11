@@ -16,8 +16,6 @@ import * as CryptoJS from 'crypto-js';
 })
 export class AboutPage {
 
-  cadenaEncriptada: string;
-
   usuarioAutorizado: string;
   usuarioAutorizadoEmail: string;
 
@@ -25,17 +23,29 @@ export class AboutPage {
   }
 
   ionViewCanEnter() {
-
-    var hash = CryptoJS.HmacSHA256('Mensaje a encriptar', 'clave secreta');
-    var hashInB64 = CryptoJS.enc.Base64.stringify(hash);
-    var hashInHex = CryptoJS.enc.Hex.stringify(hash);
-    this.cadenaEncriptada = '[' + hashInB64 + '][' + hashInHex + ']';
-    console.log('Cadena encriptada [' + this.cadenaEncriptada + ']');
-
     this.usuarioAutorizado = window.localStorage.getItem('usuarioAutorizado');
     console.log('Usuario autorizado [' + this.usuarioAutorizado + ']');
     this.usuarioAutorizadoEmail = window.localStorage.getItem('usuarioAutorizadoEmail');
     console.log('Usuario autorizado email [' + this.usuarioAutorizadoEmail + ']');
+
+    // pruebas criptografía
+
+    var hmacSha256 = CryptoJS.HmacSHA256(this.usuarioAutorizadoEmail, 'clave secreta');
+    var hmacSha256B64 = CryptoJS.enc.Base64.stringify(hmacSha256);
+    var hmacSha256Hex = CryptoJS.enc.Hex.stringify(hmacSha256);
+    var hashSha256 = CryptoJS.SHA256(this.usuarioAutorizadoEmail);
+    var hashSha256B64 = CryptoJS.enc.Base64.stringify(hashSha256);
+    var hashSha256Hex = CryptoJS.enc.Hex.stringify(hashSha256);
+
+    console.log('hmacSha256B64 [' + this.usuarioAutorizadoEmail + '] -> ');
+    console.log(hmacSha256B64);
+    console.log('hmacSha256Hex [' + this.usuarioAutorizadoEmail + '] -> ');
+    console.log(hmacSha256Hex);
+    console.log('hashSha256B64 [' + this.usuarioAutorizadoEmail + '] -> ');
+    console.log(hashSha256B64);
+    console.log('hashSha256Hex [' + this.usuarioAutorizadoEmail + '] -> ');
+    console.log(hashSha256Hex);
+
     return (this.usuarioAutorizado != null && this.usuarioAutorizado != "undefined");
   }
 
